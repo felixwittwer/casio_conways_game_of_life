@@ -21,6 +21,10 @@ void RenderArray(int x, int y, int array[8][8]){
     }
 }
 
+// 0 -> 3 Lives -> 1
+// 1 -> < 2 Lives OR > 3 Lives -> 0
+// 1 -> 2 Lives OR 3 Lives -> 1
+
 
 //****************************************************************************
 //  AddIn_main (Sample program main function)
@@ -37,22 +41,62 @@ void RenderArray(int x, int y, int array[8][8]){
 int AddIn_main(int isAppli, unsigned short OptionNum)
 {
     unsigned int key;
-    int cells[8][8] = {
-        {0,1,1,0,0,0,1,1},
-        {1,0,0,1,0,0,1,1},
-        {0,1,1,0,0,0,0,0},
-        {0,0,0,0,0,1,0,0},
-        {0,0,0,0,0,1,0,0},
-        {0,0,1,0,0,1,0,0},
-        {0,1,0,1,0,0,0,0},
-        {0,0,1,1,0,0,0,0}
+    int Ax = 0;
+    int Ay = 0;
+    int cellcount = 0;
+    int wait = 1000;
+    int cellsone[8][8] = {
+        {0,0,0,0,0,0,0,0},
+        {0,0,0,0,0,0,0,0},
+        {0,0,1,1,1,0,0,0},
+        {0,0,0,0,0,0,0,0},
+        {0,0,0,0,0,0,0,0},
+        {0,0,0,0,0,0,0,0},
+        {0,0,0,0,0,0,0,0},
+        {0,0,0,0,0,0,0,0}
+    };
+
+        // {0,1,1,0,0,0,1,1},
+        // {1,0,0,1,0,0,1,1},
+        // {0,1,1,0,0,0,0,0},
+        // {0,0,0,0,0,1,0,0},
+        // {0,0,0,0,0,1,0,0},
+        // {0,0,1,0,0,1,0,0},
+        // {0,1,0,1,0,0,0,0},
+        // {0,0,1,1,0,0,0,0}
+
+    int cellstwo[8][8] = {
+        {0,0,0,0,0,0,0,0},
+        {0,0,0,0,0,0,0,0},
+        {0,0,0,0,0,0,0,0},
+        {0,0,0,0,0,0,0,0},
+        {0,0,0,0,0,0,0,0},
+        {0,0,0,0,0,0,0,0},
+        {0,0,0,0,0,0,0,0},
+        {0,0,0,0,0,0,0,0}
     };
 
     Bdisp_AllClr_DDVRAM();
 
     while(1){
         GetKey(&key);
-        RenderArray(5,5, cells);
+        RenderArray(5,5, cellsone);
+        for (Ax = 0; Ax < 8; Ax++){
+            for (Ay = 0; Ay < 8; Ay++){
+                cellcount = cellsone[Ay-1][Ax-1] + cellsone[Ay-1][Ax] + cellsone[Ay-1][Ax+1] +cellsone[Ay][Ax-1] + cellsone[Ay][Ax+1] + cellsone[Ay+1][Ax-1] +cellsone[Ay+1][Ax] + cellsone[Ay+1][Ax+1];
+                if (cellcount > 3){
+                    cellstwo[Ay][Ax] = 1;
+                }else if(cellcount == 2 || cellcount == 3){
+                    cellsone[Ay][Ax] = 1;
+                }else if(cellcount < 2 || cellcount > 3){
+                    cellsone[Ay][Ax] = 0;
+                }
+            }
+        }
+        Sleep(wait);
+        Bdisp_AllClr_DDVRAM();
+        Sleep(500);
+        RenderArray(5,5, cellstwo);
     }
 
     return 1;
