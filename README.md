@@ -6,7 +6,7 @@ simulates Conway's Game of Life on your calculator
 Connect Casio fx-9860 GIII or GII to your Computer with the help of the USB cable.<br>
 Press [F1]<br>
 
-### For OSCIL.G1A
+### For GOL.G1A
 
 Open the file manager of your operating system and insert the GOL.G1A file into <br>
 the shown device (usually D:).<br>
