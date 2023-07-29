@@ -44,7 +44,8 @@ int AddIn_main(int isAppli, unsigned short OptionNum)
     int Ax = 0;
     int Ay = 0;
     int cellcount = 0;
-    int wait = 1000;
+    int wait = 0;
+    int pauseg = 0;
     int cellsone[8][8] = {
         {0,0,0,0,0,0,0,0},
         {0,0,0,0,0,0,0,0},
@@ -55,15 +56,6 @@ int AddIn_main(int isAppli, unsigned short OptionNum)
         {0,0,0,0,0,0,0,0},
         {0,0,0,0,0,0,0,0}
     };
-
-        // {0,1,1,0,0,0,1,1},
-        // {1,0,0,1,0,0,1,1},
-        // {0,1,1,0,0,0,0,0},
-        // {0,0,0,0,0,1,0,0},
-        // {0,0,0,0,0,1,0,0},
-        // {0,0,1,0,0,1,0,0},
-        // {0,1,0,1,0,0,0,0},
-        // {0,0,1,1,0,0,0,0}
 
     int cellstwo[8][8] = {
         {0,0,0,0,0,0,0,0},
@@ -76,26 +68,62 @@ int AddIn_main(int isAppli, unsigned short OptionNum)
         {0,0,0,0,0,0,0,0}
     };
 
+    int celltest[8][8] = {
+        {0,1,1,0,0,0,1,1},
+        {1,0,0,1,0,0,1,1},
+        {0,1,1,0,0,0,0,0},
+        {0,0,0,0,0,1,0,0},
+        {0,0,0,0,0,1,0,0},
+        {0,0,1,0,0,1,0,0},
+        {0,1,0,1,0,0,0,0},
+        {0,0,1,1,0,0,0,0}
+    };
+
     Bdisp_AllClr_DDVRAM();
+    RenderArray(5,5, cellsone);
 
     while(1){
         GetKey(&key);
         RenderArray(5,5, cellsone);
-        for (Ax = 0; Ax < 8; Ax++){
-            for (Ay = 0; Ay < 8; Ay++){
-                cellcount = cellsone[Ay-1][Ax-1] + cellsone[Ay-1][Ax] + cellsone[Ay-1][Ax+1] +cellsone[Ay][Ax-1] + cellsone[Ay][Ax+1] + cellsone[Ay+1][Ax-1] +cellsone[Ay+1][Ax] + cellsone[Ay+1][Ax+1];
-                if (cellcount > 3){
-                    cellstwo[Ay][Ax] = 1;
-                }else if(cellcount == 2 || cellcount == 3){
-                    cellsone[Ay][Ax] = 1;
-                }else if(cellcount < 2 || cellcount > 3){
-                    cellsone[Ay][Ax] = 0;
+        if(key==KEY_CHAR_DP && pauseg == 0){
+            pauseg = 1;
+        }else if (key==KEY_CHAR_DP && pauseg ==1){
+            pauseg = 0;
+        }
+
+        if (pauseg == 0){
+            for (Ax = 0; Ax < 8; Ax++){
+                for (Ay = 0; Ay < 8; Ay++){
+                    if (cellsone[Ay][Ax]==0){
+                        cellcount = cellsone[Ay-1][Ax-1] + cellsone[Ay-1][Ax] + cellsone[Ay-1][Ax+1] +cellsone[Ay][Ax-1] + cellsone[Ay][Ax+1] + cellsone[Ay+1][Ax-1] +cellsone[Ay+1][Ax] + cellsone[Ay+1][Ax+1];
+
+                        if (cellcount == 3){
+                            cellstwo[Ay][Ax] = 1;
+                        }
+
+                    } else if (cellsone[Ay][Ax]==1){
+                        cellcount = cellsone[Ay-1][Ax-1] + cellsone[Ay-1][Ax] + cellsone[Ay-1][Ax+1] +cellsone[Ay][Ax-1] + cellsone[Ay][Ax+1] + cellsone[Ay+1][Ax-1] +cellsone[Ay+1][Ax] + cellsone[Ay+1][Ax+1];
+
+                        if(cellcount == 2 || cellcount == 3){
+                            cellstwo[Ay][Ax] = 1;
+                        }else if(cellcount < 2 || cellcount > 3){
+                            cellstwo[Ay][Ax] = 0;
+                        }
+                    }
                 }
             }
+
+            for (Ax = 0; Ax < 8; Ax++){
+                for (Ay = 0; Ay < 8; Ay++){
+                    cellsone[Ay][Ax] = cellstwo[Ay][Ax];
+                }
+            }
+            
         }
+
         Sleep(wait);
         Bdisp_AllClr_DDVRAM();
-        Sleep(500);
+        //Sleep(500);
         RenderArray(5,5, cellstwo);
     }
 
