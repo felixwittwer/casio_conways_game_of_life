@@ -10,12 +10,12 @@
 #include "fxlib.h"
 #include <stdio.h>
 
-void RenderArray(int x, int y, int array[8][8]){
+void RenderArray(int x, int y, int sizex, int sizey, int array[20][20]){
     int Ax = 0;
     int Ay = 0;
 
-    for (Ax = 0; Ax < 8; Ax++){
-        for (Ay = 0; Ay < 8; Ay++){
+    for (Ax = 0; Ax < sizex; Ax++){
+        for (Ay = 0; Ay < sizey; Ay++){
             Bdisp_SetPoint_VRAM(x + Ax, y + Ay, array[Ay][Ax]);
         }
     }
@@ -43,29 +43,45 @@ int AddIn_main(int isAppli, unsigned short OptionNum)
     unsigned int key;
     int Ax = 0;
     int Ay = 0;
+    int sizex = 20;
+    int sizey = 20;
     int cellcount = 0;
     int wait = 0;
     int pauseg = 0;
-    int cellsone[8][8] = {
-        {0,0,0,0,0,0,0,0},
-        {0,0,0,0,0,0,0,0},
-        {0,0,1,1,1,0,0,0},
-        {0,0,0,0,0,0,0,0},
-        {0,0,0,0,0,0,0,0},
-        {0,0,0,0,0,0,0,0},
-        {0,0,0,0,0,0,0,0},
-        {0,0,0,0,0,0,0,0}
+    int cellsone[20][20] = {
+        {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+        {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+        {0,0,0,0,0,0,1,1,1,0,0,0,1,1,1,0,0,0,0,0},
+        {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+        {0,0,0,0,1,0,0,0,0,1,0,1,0,0,0,0,1,0,0,0},
+        {0,0,0,0,1,0,0,0,0,1,0,1,0,0,0,0,1,0,0,0},
+        {0,0,0,0,1,0,0,0,0,1,0,1,0,0,0,0,1,0,0,0},
+        {0,0,0,0,0,0,1,1,1,0,0,0,1,1,1,0,0,0,0,0},
+        {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+        {0,0,0,0,0,0,1,1,1,0,0,0,1,1,1,0,0,0,0,0},
+        {0,0,0,0,1,0,0,0,0,1,0,1,0,0,0,0,1,0,0,0},
+        {0,0,0,0,1,0,0,0,0,1,0,1,0,0,0,0,1,0,0,0},
+        {0,0,0,0,1,0,0,0,0,1,0,1,0,0,0,0,1,0,0,0},
+        {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+        {0,1,0,0,0,0,1,1,1,0,0,0,1,1,1,0,0,0,0,0},
+        {0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+        {1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+        {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+        {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+        {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
     };
 
-    int cellstwo[8][8] = {
-        {0,0,0,0,0,0,0,0},
-        {0,0,0,0,0,0,0,0},
-        {0,0,0,0,0,0,0,0},
-        {0,0,0,0,0,0,0,0},
-        {0,0,0,0,0,0,0,0},
-        {0,0,0,0,0,0,0,0},
-        {0,0,0,0,0,0,0,0},
-        {0,0,0,0,0,0,0,0}
+    int cellstwo[20][20] = {
+        {0,0,0,0,0,0,0,0,0,0},
+        {0,0,0,0,0,0,0,0,0,0},
+        {0,0,0,0,0,0,0,0,0,0},
+        {0,0,0,0,0,0,0,0,0,0},
+        {0,0,0,0,0,0,0,0,0,0},
+        {0,0,0,0,0,0,0,0,0,0},
+        {0,0,0,0,0,0,0,0,0,0},
+        {0,0,0,0,0,0,0,0,0,0},
+        {0,0,0,0,0,0,0,0,0,0},
+        {0,0,0,0,0,0,0,0,0,0}
     };
 
     int celltest[8][8] = {
@@ -80,11 +96,11 @@ int AddIn_main(int isAppli, unsigned short OptionNum)
     };
 
     Bdisp_AllClr_DDVRAM();
-    RenderArray(5,5, cellsone);
+    RenderArray(5,5, sizex, sizey, cellsone);
 
     while(1){
         GetKey(&key);
-        RenderArray(5,5, cellsone);
+        RenderArray(5,5, sizex, sizey, cellsone);
         if(key==KEY_CHAR_DP && pauseg == 0){
             pauseg = 1;
         }else if (key==KEY_CHAR_DP && pauseg ==1){
@@ -92,8 +108,8 @@ int AddIn_main(int isAppli, unsigned short OptionNum)
         }
 
         if (pauseg == 0){
-            for (Ax = 0; Ax < 8; Ax++){
-                for (Ay = 0; Ay < 8; Ay++){
+            for (Ax = 0; Ax < sizex; Ax++){
+                for (Ay = 0; Ay < sizey; Ay++){
                     if (cellsone[Ay][Ax]==0){
                         cellcount = cellsone[Ay-1][Ax-1] + cellsone[Ay-1][Ax] + cellsone[Ay-1][Ax+1] +cellsone[Ay][Ax-1] + cellsone[Ay][Ax+1] + cellsone[Ay+1][Ax-1] +cellsone[Ay+1][Ax] + cellsone[Ay+1][Ax+1];
 
@@ -113,18 +129,16 @@ int AddIn_main(int isAppli, unsigned short OptionNum)
                 }
             }
 
-            for (Ax = 0; Ax < 8; Ax++){
-                for (Ay = 0; Ay < 8; Ay++){
+            for (Ax = 0; Ax < sizex; Ax++){
+                for (Ay = 0; Ay < sizey; Ay++){
                     cellsone[Ay][Ax] = cellstwo[Ay][Ax];
                 }
             }
             
         }
 
-        Sleep(wait);
         Bdisp_AllClr_DDVRAM();
-        //Sleep(500);
-        RenderArray(5,5, cellstwo);
+        RenderArray(5,5, sizex, sizey, cellstwo);
     }
 
     return 1;

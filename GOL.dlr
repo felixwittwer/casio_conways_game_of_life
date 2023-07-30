@@ -9,3 +9,10 @@ Flags=00001012
 File=C:\Users\Felix\Desktop\casio_conways_game_of_life\casio_conways_game_of_life-main\GOL.c
 Line=68
 Flags=00001012
+Sublevel=1
+
+[Breakpoint]
+File=C:\Users\Felix\Desktop\casio_conways_game_of_life\casio_conways_game_of_life-main\GOL.c
+Line=68
+Flags=00001012
+Sublevel=2
