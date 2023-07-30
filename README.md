@@ -18,3 +18,8 @@ Press [EXE] as shown on the screen.<br>
 Press [EXIT] as shown on the screen.<br>
 Press [MENU] as shown on the screen.<br>
 <br>
+
+### How to Use
+
+1. Open the Add-In on your calculator
+2. press any key to generate next generation
