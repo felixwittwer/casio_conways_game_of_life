@@ -46,11 +46,8 @@ int AddIn_main(int isAppli, unsigned short OptionNum)
     int sizex = 20;
     int sizey = 20;
     int cellcount = 0;
-    int generation = 0;
-    int wait = 500;
-    int pausegen = 0;
-    int cursorx = 0;
-    int cursory = 0;
+    int wait = 0;
+    int pauseg = 0;
     int cellsone[20][20] = {
         {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
         {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
@@ -103,70 +100,45 @@ int AddIn_main(int isAppli, unsigned short OptionNum)
 
     while(1){
         GetKey(&key);
-
-        RenderArray(5,5, sizex, sizey, cellsone);
-        if(key==KEY_CHAR_DP && pausegen == 0){
-            pausegen = 1;
-            Sleep(200);
-        }else if (key == KEY_CHAR_DP && pausegen ==1){
-            pausegen = 0;
-            Sleep(200);
-        }
-
-        if (pausegen == 1){
-            if(key==KEY_CTRL_UP){
-                cursory = cursory - 1;
-            }else if(key==KEY_CTRL_DOWN){
-                cursory = cursory + 1;
-            }else if(key==KEY_CTRL_RIGHT){
-                cursorx = cursorx + 1;
-            }else if(key==KEY_CTRL_LEFT){
-                cursorx = cursorx - 1; 
-            }
-
-            if(key==KEY_CTRL_EXE){
-                if(cellsone[cursory][cursorx]==0){
-                    cellsone[cursory][cursorx]=1;
-                }else if(cellsone[cursory][cursorx]==1){
-                    cellsone[cursory][cursorx]=0;
-                }
-            }
-
-            Bdisp_AllClr_DDVRAM();
+        while(1){
             RenderArray(5,5, sizex, sizey, cellsone);
-        }
+            if(IsKeyDown(KEY_CHAR_DP)==1 && pauseg == 0){
+                pauseg = 1;
+            }else if (IsKeyDown(KEY_CHAR_DP)==1 && pauseg ==1){
+                pauseg = 0;
+            }
 
-        if (pausegen == 0){
-            for (Ax = 0; Ax < sizex; Ax++){
-                for (Ay = 0; Ay < sizey; Ay++){
-                    if (cellsone[Ay][Ax]==0){
-                        cellcount = cellsone[Ay-1][Ax-1] + cellsone[Ay-1][Ax] + cellsone[Ay-1][Ax+1] +cellsone[Ay][Ax-1] + cellsone[Ay][Ax+1] + cellsone[Ay+1][Ax-1] +cellsone[Ay+1][Ax] + cellsone[Ay+1][Ax+1];
+            if (pauseg == 0){
+                for (Ax = 0; Ax < sizex; Ax++){
+                    for (Ay = 0; Ay < sizey; Ay++){
+                        if (cellsone[Ay][Ax]==0){
+                            cellcount = cellsone[Ay-1][Ax-1] + cellsone[Ay-1][Ax] + cellsone[Ay-1][Ax+1] +cellsone[Ay][Ax-1] + cellsone[Ay][Ax+1] + cellsone[Ay+1][Ax-1] +cellsone[Ay+1][Ax] + cellsone[Ay+1][Ax+1];
 
-                        if (cellcount == 3){
-                            cellstwo[Ay][Ax] = 1;
-                        }
+                            if (cellcount == 3){
+                                cellstwo[Ay][Ax] = 1;
+                            }
 
-                    } else if (cellsone[Ay][Ax]==1){
-                        cellcount = cellsone[Ay-1][Ax-1] + cellsone[Ay-1][Ax] + cellsone[Ay-1][Ax+1] +cellsone[Ay][Ax-1] + cellsone[Ay][Ax+1] + cellsone[Ay+1][Ax-1] +cellsone[Ay+1][Ax] + cellsone[Ay+1][Ax+1];
+                        } else if (cellsone[Ay][Ax]==1){
+                            cellcount = cellsone[Ay-1][Ax-1] + cellsone[Ay-1][Ax] + cellsone[Ay-1][Ax+1] +cellsone[Ay][Ax-1] + cellsone[Ay][Ax+1] + cellsone[Ay+1][Ax-1] +cellsone[Ay+1][Ax] + cellsone[Ay+1][Ax+1];
 
-                        if(cellcount == 2 || cellcount == 3){
-                            cellstwo[Ay][Ax] = 1;
-                        }else if(cellcount < 2 || cellcount > 3){
-                            cellstwo[Ay][Ax] = 0;
+                            if(cellcount == 2 || cellcount == 3){
+                                cellstwo[Ay][Ax] = 1;
+                            }else if(cellcount < 2 || cellcount > 3){
+                                cellstwo[Ay][Ax] = 0;
+                            }
                         }
                     }
                 }
-            }
-            
 
-            for (Ax = 0; Ax < sizex; Ax++){
-                for (Ay = 0; Ay < sizey; Ay++){
-                    cellsone[Ay][Ax] = cellstwo[Ay][Ax];
+                for (Ax = 0; Ax < sizex; Ax++){
+                    for (Ay = 0; Ay < sizey; Ay++){
+                        cellsone[Ay][Ax] = cellstwo[Ay][Ax];
+                    }
                 }
+                
             }
             
             Bdisp_AllClr_DDVRAM();
-            // Sleep(wait);
             RenderArray(5,5, sizex, sizey, cellstwo);
         }
 
