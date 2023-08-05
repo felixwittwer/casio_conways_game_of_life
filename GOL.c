@@ -2,15 +2,15 @@
 /*                                                               */
 /*   CASIO fx-9860G SDK Library                                  */
 /*                                                               */
-/*   File name : [ProjectName].c                                 */
+/*   File name : GOL.c                                           */
 /*                                                               */
-/*   Copyright (c) 2006 CASIO COMPUTER CO., LTD.                 */
+/*   Copyright (c) 2023 Felix Wittwer                            */
 /*                                                               */
 /*****************************************************************/
 #include "fxlib.h"
 #include <stdio.h>
 
-void RenderArray(int x, int y, int sizex, int sizey, int array[20][20]){
+void RenderArray(int x, int y, int sizex, int sizey, int array[50][126]){
     int Ax = 0;
     int Ay = 0;
 
@@ -43,15 +43,15 @@ int AddIn_main(int isAppli, unsigned short OptionNum)
     unsigned int key;
     int Ax = 0;
     int Ay = 0;
-    int sizex = 20;
-    int sizey = 20;
+    int sizex = 126;
+    int sizey = 50;
     int cellcount = 0;
     int generation = 0;
     int wait = 500;
     int pausegen = 0;
     int cursorx = 0;
     int cursory = 0;
-    int cellsone[20][20] = {
+    int cellsone[50][126] = {
         {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
         {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
         {0,0,0,0,0,0,1,1,1,0,0,0,1,1,1,0,0,0,0,0},
@@ -74,7 +74,7 @@ int AddIn_main(int isAppli, unsigned short OptionNum)
         {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
     };
 
-    int cellstwo[20][20] = {
+    int cellstwo[50][126] = {
         {0,0,0,0,0,0,0,0,0,0},
         {0,0,0,0,0,0,0,0,0,0},
         {0,0,0,0,0,0,0,0,0,0},
@@ -99,12 +99,12 @@ int AddIn_main(int isAppli, unsigned short OptionNum)
     };
 
     Bdisp_AllClr_DDVRAM();
-    RenderArray(5,5, sizex, sizey, cellsone);
+    RenderArray(1,1, sizex, sizey, cellsone);
 
     while(1){
         GetKey(&key);
 
-        RenderArray(5,5, sizex, sizey, cellsone);
+        RenderArray(1,1, sizex, sizey, cellsone);
         if(key==KEY_CHAR_DP && pausegen == 0){
             pausegen = 1;
             Sleep(200);
@@ -133,7 +133,7 @@ int AddIn_main(int isAppli, unsigned short OptionNum)
             }
 
             Bdisp_AllClr_DDVRAM();
-            RenderArray(5,5, sizex, sizey, cellsone);
+            RenderArray(1,1, sizex, sizey, cellsone);
         }
 
         if (pausegen == 0){
@@ -167,7 +167,7 @@ int AddIn_main(int isAppli, unsigned short OptionNum)
             
             Bdisp_AllClr_DDVRAM();
             // Sleep(wait);
-            RenderArray(5,5, sizex, sizey, cellstwo);
+            RenderArray(1,1, sizex, sizey, cellstwo);
         }
 
     }
