@@ -87,15 +87,15 @@ int AddIn_main(int isAppli, unsigned short OptionNum)
         {0,0,0,0,0,0,0,0,0,0}
     };
 
-    int celltest[8][8] = {
-        {0,1,1,0,0,0,1,1},
-        {1,0,0,1,0,0,1,1},
-        {0,1,1,0,0,0,0,0},
-        {0,0,0,0,0,1,0,0},
-        {0,0,0,0,0,1,0,0},
-        {0,0,1,0,0,1,0,0},
-        {0,1,0,1,0,0,0,0},
-        {0,0,1,1,0,0,0,0}
+    int cellclear[8][8] = {
+        {0,0,0,0,0,0,0,0},
+        {0,0,0,0,0,0,0,0},
+        {0,0,0,0,0,0,0,0},
+        {0,0,0,0,0,0,0,0},
+        {0,0,0,0,0,0,0,0},
+        {0,0,0,0,0,0,0,0},
+        {0,0,0,0,0,0,0,0},
+        {0,0,0,0,0,0,0,0}
     };
 
     Bdisp_AllClr_DDVRAM();
@@ -105,12 +105,19 @@ int AddIn_main(int isAppli, unsigned short OptionNum)
         GetKey(&key);
 
         RenderArray(1,1, sizex, sizey, cellsone);
-        if(key==KEY_CHAR_DP && pausegen == 0){
+        if((key==KEY_CHAR_DP||key==KEY_CTRL_F1) && pausegen == 0){
             pausegen = 1;
             Sleep(200);
-        }else if (key == KEY_CHAR_DP && pausegen ==1){
+        }else if ((key==KEY_CHAR_DP||key==KEY_CTRL_F1) && pausegen == 1){
             pausegen = 0;
             Sleep(200);
+        }else if (key==KEY_CTRL_F2){
+            for (Ax = 0; Ax < sizex; Ax++){
+                for (Ay = 0; Ay < sizey; Ay++){
+                    cellsone[Ay][Ax] = 0;
+                    cellstwo[Ay][Ax] = 0;
+                }
+            }
         }
 
         if (pausegen == 1){
@@ -169,6 +176,22 @@ int AddIn_main(int isAppli, unsigned short OptionNum)
             // Sleep(wait);
             RenderArray(1,1, sizex, sizey, cellstwo);
         }
+
+        if(pausegen == 1){
+            locate(2,8);
+            Print("\xE6\x9E");
+        }else if(pausegen == 0){
+            Bdisp_DrawLineVRAM(8, 57, 8, 61);
+            Bdisp_DrawLineVRAM(10, 57, 10, 61);
+        }
+        Bdisp_DrawLineVRAM(1,54,19,54);
+        Bdisp_DrawLineVRAM(19,54,19,62);
+
+        Bdisp_DrawLineVRAM(21,54,39,54);
+        Bdisp_DrawLineVRAM(39,54,39,62);
+        PrintMini(25,57,"DEL", MINI_OVER);
+        Bdisp_PutDisp_DD();
+
 
     }
 

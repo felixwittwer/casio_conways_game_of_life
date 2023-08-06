@@ -2,7 +2,7 @@
 
 [_1]
 Type=5
-Order=2
+Order=1
 Top=15
 Left=2355
 Height=4740
@@ -14,11 +14,11 @@ OptionA=0
 
 [_2]
 Type=1
-Order=3
+Order=2
 Top=15
 Left=7920
-Height=4800
-Width=5820
+Height=4785
+Width=5640
 State=0
 Flags=00000001
 OptionA=15
@@ -103,12 +103,12 @@ OptionA=0
 
 [_32]
 Type=16
-Order=1
+Order=3
 Top=15
 Left=13770
 Height=16500
 Width=14790
 State=0
 Flags=00000020
-Setting=41:54:GOL.c
+Setting=74:50:GOL.c
 OptionA=0
