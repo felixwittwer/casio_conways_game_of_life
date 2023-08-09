@@ -14,6 +14,7 @@ void RenderArray(int x, int y, int sizex, int sizey, int array[50][126]){
     int Ax = 0;
     int Ay = 0;
 
+    // read array an set pixels on VRAM
     for (Ax = 0; Ax < sizex; Ax++){
         for (Ay = 0; Ay < sizey; Ay++){
             Bdisp_SetPoint_VRAM(x + Ax, y + Ay, array[Ay][Ax]);
@@ -21,9 +22,12 @@ void RenderArray(int x, int y, int sizex, int sizey, int array[50][126]){
     }
 }
 
-// 0 -> 3 Lives -> 1
-// 1 -> < 2 Lives OR > 3 Lives -> 0
-// 1 -> 2 Lives OR 3 Lives -> 1
+// print int variables to screen
+void printminiInt(int x, int y, int f){
+    unsigned char buffer[9];
+    sprintf(buffer, "%d", f);
+    PrintMini(x,y, buffer, MINI_OVER);
+}
 
 
 //****************************************************************************
@@ -87,24 +91,14 @@ int AddIn_main(int isAppli, unsigned short OptionNum)
         {0,0,0,0,0,0,0,0,0,0}
     };
 
-    int cellclear[8][8] = {
-        {0,0,0,0,0,0,0,0},
-        {0,0,0,0,0,0,0,0},
-        {0,0,0,0,0,0,0,0},
-        {0,0,0,0,0,0,0,0},
-        {0,0,0,0,0,0,0,0},
-        {0,0,0,0,0,0,0,0},
-        {0,0,0,0,0,0,0,0},
-        {0,0,0,0,0,0,0,0}
-    };
-
     Bdisp_AllClr_DDVRAM();
-    RenderArray(1,1, sizex, sizey, cellsone);
+    RenderArray(1,1, sizex, sizey, cellsone); // write cellsone to VRAM
 
     while(1){
         GetKey(&key);
 
         RenderArray(1,1, sizex, sizey, cellsone);
+        // handle pause/play of simulation
         if((key==KEY_CHAR_DP||key==KEY_CTRL_F1) && pausegen == 0){
             pausegen = 1;
             Sleep(200);
@@ -112,15 +106,20 @@ int AddIn_main(int isAppli, unsigned short OptionNum)
             pausegen = 0;
             Sleep(200);
         }else if (key==KEY_CTRL_F2){
+            // set all positions in both arrays to 0
             for (Ax = 0; Ax < sizex; Ax++){
                 for (Ay = 0; Ay < sizey; Ay++){
                     cellsone[Ay][Ax] = 0;
                     cellstwo[Ay][Ax] = 0;
                 }
             }
+            // update other variables
+            generation = 0;
+            pausegen = 1;
         }
 
         if (pausegen == 1){
+            // handle cursor movement
             if(key==KEY_CTRL_UP){
                 cursory = cursory - 1;
             }else if(key==KEY_CTRL_DOWN){
@@ -131,6 +130,7 @@ int AddIn_main(int isAppli, unsigned short OptionNum)
                 cursorx = cursorx - 1; 
             }
 
+            // manipulate single pixel on cursor position
             if(key==KEY_CTRL_EXE){
                 if(cellsone[cursory][cursorx]==0){
                     cellsone[cursory][cursorx]=1;
@@ -140,9 +140,14 @@ int AddIn_main(int isAppli, unsigned short OptionNum)
             }
 
             Bdisp_AllClr_DDVRAM();
-            RenderArray(1,1, sizex, sizey, cellsone);
+            RenderArray(1,1, sizex, sizey, cellsone); // write cellsone to VRAM
         }
 
+        // 0 -> 3 Lives -> 1
+        // 1 -> < 2 Lives OR > 3 Lives -> 0
+        // 1 -> 2 Lives OR 3 Lives -> 1
+
+        // apply CGOL rules when simulation is not paused
         if (pausegen == 0){
             for (Ax = 0; Ax < sizex; Ax++){
                 for (Ay = 0; Ay < sizey; Ay++){
@@ -165,7 +170,7 @@ int AddIn_main(int isAppli, unsigned short OptionNum)
                 }
             }
             
-
+            // transfer cellstwo to cellsone for next generation
             for (Ax = 0; Ax < sizex; Ax++){
                 for (Ay = 0; Ay < sizey; Ay++){
                     cellsone[Ay][Ax] = cellstwo[Ay][Ax];
@@ -174,23 +179,29 @@ int AddIn_main(int isAppli, unsigned short OptionNum)
             
             Bdisp_AllClr_DDVRAM();
             // Sleep(wait);
-            RenderArray(1,1, sizex, sizey, cellstwo);
+            RenderArray(1,1, sizex, sizey, cellstwo); // write array to VRAM
+            generation = generation + 1; // update generation variable
         }
 
         if(pausegen == 1){
             locate(2,8);
-            Print("\xE6\x9E");
+            Print("\xE6\x9E");  // play indocator
         }else if(pausegen == 0){
             Bdisp_DrawLineVRAM(8, 57, 8, 61);
-            Bdisp_DrawLineVRAM(10, 57, 10, 61);
+            Bdisp_DrawLineVRAM(10, 57, 10, 61); // pause indicator
         }
+
         Bdisp_DrawLineVRAM(1,54,19,54);
-        Bdisp_DrawLineVRAM(19,54,19,62);
+        Bdisp_DrawLineVRAM(19,54,19,62); // first menu box for play/pause indicator
 
         Bdisp_DrawLineVRAM(21,54,39,54);
-        Bdisp_DrawLineVRAM(39,54,39,62);
+        Bdisp_DrawLineVRAM(39,54,39,62); // second menu box for DEL
         PrintMini(25,57,"DEL", MINI_OVER);
-        Bdisp_PutDisp_DD();
+        PrintMini(43,57,"Gen:", MINI_OVER);
+
+        printminiInt(63,57,generation); // display current number of generations on screen
+        
+        Bdisp_PutDisp_DD(); // load VRAM to DD (display driver)
 
 
     }

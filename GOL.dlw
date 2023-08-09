@@ -2,23 +2,23 @@
 
 [_1]
 Type=5
-Order=1
+Order=3
 Top=15
 Left=2355
 Height=4740
 Width=5565
 State=0
 Flags=00000020
-Setting=135:1:GOL.c
+Setting=120:1:GOL.c
 OptionA=0
 
 [_2]
 Type=1
 Order=2
-Top=15
+Top=0
 Left=7920
 Height=4785
-Width=5640
+Width=5760
 State=0
 Flags=00000001
 OptionA=15
@@ -27,8 +27,8 @@ OptionB=15
 [_3]
 Type=6
 Order=4
-Top=4455
-Left=7935
+Top=4185
+Left=7845
 Height=6360
 Width=5535
 State=0
@@ -42,13 +42,13 @@ Top=4740
 Left=2340
 Height=3165
 Width=5565
-State=1
+State=17
 Flags=00000000
 OptionA=0
 
 [_5]
 Type=8
-Order=5
+Order=6
 Top=4740
 Left=2340
 Height=5790
@@ -81,10 +81,10 @@ OptionA=0
 
 [_8]
 Type=17
-Order=6
+Order=5
 Top=15
 Left=120
-Height=11115
+Height=10485
 Width=2220
 State=0
 Flags=00000000
@@ -92,10 +92,10 @@ OptionA=0
 
 [_9]
 Type=15
-Order=0
-Top=8175
-Left=150
-Height=11940
+Order=1
+Top=10455
+Left=105
+Height=9420
 Width=13230
 State=0
 Flags=00000000
@@ -103,12 +103,12 @@ OptionA=0
 
 [_32]
 Type=16
-Order=3
-Top=15
-Left=13770
-Height=16500
-Width=14790
+Order=0
+Top=30
+Left=13530
+Height=19860
+Width=20310
 State=0
 Flags=00000020
-Setting=74:50:GOL.c
+Setting=98:55:GOL.c
 OptionA=0
