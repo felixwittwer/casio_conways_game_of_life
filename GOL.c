@@ -45,6 +45,7 @@ void printminiInt(int x, int y, int f){
 int AddIn_main(int isAppli, unsigned short OptionNum)
 {
     unsigned int key;
+    int i;
     int Ax = 0;
     int Ay = 0;
     int sizex = 126;
@@ -139,6 +140,35 @@ int AddIn_main(int isAppli, unsigned short OptionNum)
                 }
             }
 
+            // templates
+            if (key==KEY_CHAR_1){
+                // simple glider
+                cellsone[cursory+2][cursorx]=1;
+                cellsone[cursory+2][cursorx+1]=1;
+                cellsone[cursory+2][cursorx+2]=1;
+                cellsone[cursory+1][cursorx+2]=1;
+                cellsone[cursory][cursorx+1]=1;
+            }else if(key==KEY_CHAR_2){
+                // alternator for start array
+                for (i = 0; i < 13; i++){
+                    if(i==0||i==5||i==7||i==12){
+                        cellsone[cursory+i][cursorx+2]=1;
+                        cellsone[cursory+i][cursorx+3]=1;
+                        cellsone[cursory+i][cursorx+4]=1;
+                        cellsone[cursory+i][cursorx+8]=1;
+                        cellsone[cursory+i][cursorx+9]=1;
+                        cellsone[cursory+i][cursorx+10]=1;
+                    }
+                    
+                    if(i==2||i==3||i==4||i==8||i==9||i==10){
+                        cellsone[cursory+i][cursorx]=1;
+                        cellsone[cursory+i][cursorx+5]=1;
+                        cellsone[cursory+i][cursorx+7]=1;
+                        cellsone[cursory+i][cursorx+12]=1;
+                    }
+                }
+            }
+
             Bdisp_AllClr_DDVRAM();
             RenderArray(1,1, sizex, sizey, cellsone); // write cellsone to VRAM
         }
@@ -185,7 +215,7 @@ int AddIn_main(int isAppli, unsigned short OptionNum)
 
         if(pausegen == 1){
             locate(2,8);
-            Print("\xE6\x9E");  // play indocator
+            Print("\xE6\x9E");  // play indicator
         }else if(pausegen == 0){
             Bdisp_DrawLineVRAM(8, 57, 8, 61);
             Bdisp_DrawLineVRAM(10, 57, 10, 61); // pause indicator
