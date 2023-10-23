@@ -24,3 +24,14 @@ For the Casio fx-9860 GII use the official Casio FA-124 program.<br>
 Press [F1] to play or pause the simulation.<br>
 When the simulation is paused move the coursor with the arrow keys and press [EXE] to place a pixel.<br>
 Alternatively you can use [1] to place a simple glider or [2] to place a simple alternator.<br>
+
+[1] glider      [2] alternator
+  x                  x x x       x x x
+    x            x         x   x        x
+x x x            x         x   x        x
+                 x         x   x        x
+                    x x x        x x x
+                 x         x   x        x
+                 x         x   x        x
+                 x         x   x        x
+                    x x x        x x x
